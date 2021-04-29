@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.logging.Level;
@@ -30,12 +32,24 @@ public class pongeServer {
             
             Socket client = server.accept();
             InputStream input = client.getInputStream();
-            
             ObjectInputStream IS = new ObjectInputStream(input);
             
             char[] mess = (char[]) IS.readObject();
             
-            System.out.println(mess[0]);
+            char[] change = new char[mess.length];
+            for (int i=0; i<change.length; i++) {
+                boolean x = true;
+                do {
+                    int num = (int) (Math.random()*10);
+                    if(mess[num] != 0) {
+                        change[i] = mess[num];
+                        mess[num] = 0;
+                        x = false;
+                    }
+                } while (x);
+                
+            }
+            
             
         } catch (IOException ex) {
             Logger.getLogger(pongeServer.class.getName()).log(Level.SEVERE, null, ex);

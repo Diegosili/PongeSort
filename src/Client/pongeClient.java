@@ -41,9 +41,11 @@ public class pongeClient {
             
             OutputStream OS =  server.getOutputStream();
             ObjectOutputStream OOS = new ObjectOutputStream(OS);
-            
             OOS.writeObject(list);
             
+            
+            
+            server.close();
             server.close();
             System.out.println("\nChiusura connessione");
             
