@@ -6,7 +6,10 @@
 package Client;
 
 import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.io.Serializable;
 import java.net.Socket;
 import java.util.Random;
 import java.util.logging.Level;
@@ -27,23 +30,22 @@ public class pongeClient {
         try {
             Socket server = new Socket("127.0.0.1", 550);
             
-            PrintWriter scrittore = new PrintWriter(server.getOutputStream(), true);
             char[] list = new char[10];
             Random r = new Random();
             
             for (int i=0; i<list.length; i++) {
                 char a = (char) (r.nextInt(26) + 'a');
                 list[i] = a;
-            }
-            
-            scrittore.println(list);
-            
-            for (int i=0; i<list.length; i++) {
                 System.out.print(list[i]+" ");
             }
             
+            OutputStream OS =  server.getOutputStream();
+            ObjectOutputStream OOS = new ObjectOutputStream(OS);
+            
+            OOS.writeObject(list);
+            
             server.close();
-            System.out.println("Chiusura connessione");
+            System.out.println("\nChiusura connessione");
             
         } catch (IOException ex) {
             Logger.getLogger(pongeClient.class.getName()).log(Level.SEVERE, null, ex);

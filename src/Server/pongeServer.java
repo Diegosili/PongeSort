@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.logging.Level;
@@ -29,13 +30,16 @@ public class pongeServer {
             
             Socket client = server.accept();
             InputStream input = client.getInputStream();
-            BufferedReader lettore = new BufferedReader(new InputStreamReader(input));
             
-            char mess = (char) lettore.read();
-            System.out.println("Lettera ricevuta: "+mess);
+            ObjectInputStream IS = new ObjectInputStream(input);
             
+            char[] mess = (char[]) IS.readObject();
+            
+            System.out.println(mess[0]);
             
         } catch (IOException ex) {
+            Logger.getLogger(pongeServer.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
             Logger.getLogger(pongeServer.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
